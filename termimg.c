@@ -1,4 +1,5 @@
 // Reads ANSI-escaped data on stdin, writes a PNG to stdout
+// This file is licensed under the ISC license
 
 #define _POSIX_C_SOURCE 200809l
 #include <stdint.h>
