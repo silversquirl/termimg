@@ -10,6 +10,9 @@ writes to stdout. It is very useful for converting typescript files
 created with the `script` tool into images for easy embedding in web
 pages and documents.
 
+[libvterm]: http://www.leonerd.org.uk/code/libvterm/
+[cairo]: https://www.cairographics.org/
+
 ## Usage
 
 A typical usage of termimg to generate a PNG image from a typescript file:
