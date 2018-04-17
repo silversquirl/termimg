@@ -9,11 +9,6 @@
 #include <cairo/cairo.h>
 #include <vterm.h>
 
-enum {
-	ROW = 24,
-	COL = 72,
-};
-
 static cairo_status_t cairo_write_to_file(void *fp, const unsigned char *data, unsigned int len) {
 	FILE *f = fp;
 	if (fwrite(data, 1, len, f) != len) {
@@ -96,10 +91,12 @@ int termimg_render(VTerm *vt, struct font_info fi) {
 }
 
 void usage(void) {
-	puts("Usage: termimg [-f family] [-s size] >output.png");
+	puts("Usage: termimg [options] >output.png");
 	puts("Options:");
 	puts("  -f family  Set the font family (default: monospace)");
 	puts("  -s size    Set the font size (default: 12)");
+	puts("  -r rows    Set the number of rows (default: 24)");
+	puts("  -c cols    Set the number of columns (default: 72)");
 }
 
 int main(int argc, char *argv[]) {
@@ -107,8 +104,11 @@ int main(int argc, char *argv[]) {
 		.family = "monospace",
 		.size = 12,
 	};
+
+	int row = 24, col = 72;
+
 	int ch;
-	while ((ch = getopt(argc, argv, "hf:s:")) != -1) {
+	while ((ch = getopt(argc, argv, "hf:s:r:c:")) != -1) {
 		switch (ch) {
 		case 'h':
 			usage();
@@ -122,12 +122,20 @@ int main(int argc, char *argv[]) {
 			fi.size = atoi(optarg);
 			break;
 
+		case 'r':
+			row = atoi(optarg);
+			break;
+
+		case 'c':
+			col = atoi(optarg);
+			break;
+
 		case '?':
 			return 1;
 		}
 	}
 
-	VTerm *vt = vterm_new(ROW, COL);
+	VTerm *vt = vterm_new(row, col);
 	vterm_set_utf8(vt, 1);
 	VTermScreen *s = vterm_obtain_screen(vt);
 	vterm_screen_reset(s, 1);
